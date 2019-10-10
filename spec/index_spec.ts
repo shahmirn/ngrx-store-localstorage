@@ -4,6 +4,7 @@ import { syncStateUpdate, rehydrateApplicationState, dateReviver, localStorageSy
 import *  as CryptoJS from 'crypto-js';
 import 'localstorage-polyfill';
 const INIT_ACTION = '@ngrx/store/init';
+import * as deepmerge from 'deepmerge';
 
 // Very simple classes to test serialization options.  They cover string, number, date, and nested classes
 // The top level class has static functions to help test reviver, replacer, serialize and deserialize
@@ -486,4 +487,45 @@ describe('ngrxLocalStorage', () => {
           feature2: { slice21: true, slice22: [1, 2], slice23: {} },
         });
     });
+
+    it('should enable a complex merge of rehydrated storage and state', () => {
+        const initialState = {
+            app: { app1: false, app2: [], app3: {} },
+            feature1: { slice11: false, slice12: [], slice13: {} },
+            feature2: { slice21: false, slice22: [], slice23: {} },
+          };
+  
+          // A legit case where state is saved in chunks rather than as a single object
+          localStorage.setItem('feature1', JSON.stringify({ slice11: true, slice12: [1, 2] }));
+          localStorage.setItem('feature2', JSON.stringify({ slice21: true, slice22: [1, 2] }));
+  
+          // Set up reducers
+          const reducer = (state = initialState, action) => state;
+          const mergeReducer = (state, rehydratedState, action) => {
+            // Perform a merge where we only want a single property from feature1
+            // but a deepmerge with feature2
+
+            return {                
+                ...state,
+                feature1: {
+                    slice11: rehydratedState.feature1.slice11
+                },
+                feature2: deepmerge(state.feature2, rehydratedState.feature2)
+            }
+          }
+          const metaReducer = localStorageSync({keys: [
+            {'feature1': ['slice11', 'slice12']},
+            {'feature2': ['slice21', 'slice22']},
+          ], rehydrate: true, mergeReducer});
+  
+          const action = {type: INIT_ACTION};
+  
+          // Resultant state should merge the rehydrated partial state and our initial state
+          const finalState = metaReducer(reducer)(initialState, action);
+          expect(finalState).toEqual({
+            app: { app1: false, app2: [], app3: {} },
+            feature1: { slice11: true },
+            feature2: { slice21: true, slice22: [1, 2], slice23: {} },
+          });
+    });    
 });
