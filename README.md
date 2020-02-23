@@ -59,22 +59,28 @@ An interface defining the configuration attributes to bootstrap `localStorageSyn
 
         * An object with properties that specify one or more of the following:
 
-            * serialize: A function that takes a state object and returns a plain json object to pass to json.stringify.
+            * `serialize`: A function that takes a state object and returns a plain json object to pass to json.stringify.
 
-            * deserialize: A function that takes that takes the raw JSON from JSON.parse and builds a state object.
+            * `deserialize`: A function that takes that takes the raw JSON from JSON.parse and builds a state object.
 
-            * replacer: A replacer function as specified in the [JSON.stringify documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify).
+            * `replacer`: A replacer function as specified in the [JSON.stringify documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify).
 
-            * space: The space value to pass JSON.stringify.
+            * `space`: The space value to pass JSON.stringify.
 
-            * reviver: A reviver function as specified in the [JSON.parse documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse).
+            * `reviver`: A reviver function as specified in the [JSON.parse documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse).
 
-            * filter: An array of properties which should be synced (same format as the stand-alone array specified above).
+            * `filter`: An array of properties which should be synced (same format as the stand-alone array specified above).
+
+            * `encrypt`: A function that takes a state string and returns an encrypted version of that string.
+            e.g. `(state: string) => btoa(state)`
+
+            * `decrypt`: A function that takes a state string and returns a decrypted version of that string.
+            e.g. `(state: string) => atob(state)`
 
 * `rehydrate` (optional) `boolean`: Pull initial state from local storage on startup, this will default to `false`.
 * `storage` (optional) `Storage`: Specify an object that conforms to the [Storage interface](https://github.com/Microsoft/TypeScript/blob/master/lib/lib.dom.d.ts#L9708) to use, this will default to `localStorage`.
 * `removeOnUndefined` (optional) `boolean`: Specify if the state is removed from the storage when the new value is undefined, this will default to `false`.
-* `storageKeySerializer` (optional) `(key: string) => string`: Сustom serialize function for storage keys, used to avoid Storage conflicts. 
+* `storageKeySerializer` (optional) `(key: string) => string`: Custom serialize function for storage keys, used to avoid Storage conflicts.
 * `restoreDates` \(*boolean? = true*): Restore serialized date objects. If you work directly with ISO date strings, set this option to `false`.
 * `syncCondition` (optional) `(state) => boolean`: When set, sync to storage medium will only occur when this function returns a true boolean. Example: `(state) => state.config.syncToStorage` will check the state tree under config.syncToStorage and if true, it will sync to the storage. If undefined or false it will not sync to storage. Often useful for "remember me" options in login.
 * `checkStorageAvailability` \(*boolean? = false*): Specify if the storage availability checking is expected, i.e. for server side rendering / Universal.

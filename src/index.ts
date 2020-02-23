@@ -45,8 +45,8 @@ export const rehydrateApplicationState = (
   return keys.reduce((acc, curr) => {
     let key = curr;
     let reviver = restoreDates ? dateReviver : dummyReviver;
-    let deserialize = undefined;
-    let decrypt = undefined;
+    let deserialize;
+    let decrypt;
 
     if (typeof key === 'object') {
       key = Object.keys(key)[0];
@@ -64,7 +64,7 @@ export const rehydrateApplicationState = (
         }
       }
 
-      // Ensure that encrypt and decrypt functions are both presents
+      // Ensure that encrypt and decrypt functions are both present
       if (curr[key].encrypt && curr[key].decrypt) {
         if (
           typeof curr[key].encrypt === 'function' &&
@@ -134,9 +134,9 @@ export const syncStateUpdate = (
   }
   keys.forEach(key => {
     let stateSlice = state[key];
-    let replacer = undefined;
-    let space = undefined;
-    let encrypt = undefined;
+    let replacer;
+    let space;
+    let encrypt;
 
     if (typeof key === 'object') {
       let name = Object.keys(key)[0];
@@ -148,7 +148,7 @@ export const syncStateUpdate = (
           stateSlice = key[name].serialize(stateSlice);
         } else {
           // if serialize function is not specified filter on fields if an array has been provided.
-          let filter = undefined;
+          let filter;
           if (key[name].reduce) {
             filter = key[name];
           } else if (key[name].filter) {
@@ -177,9 +177,9 @@ export const syncStateUpdate = (
         }
 
         /*
-                    Replacer and space arguments to pass to JSON.stringify.
-                    If these fields don't exist, undefined will be passed.
-                */
+          Replacer and space arguments to pass to JSON.stringify.
+          If these fields don't exist, undefined will be passed.
+        */
         replacer = key[name].replacer;
         space = key[name].space;
       }
