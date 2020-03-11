@@ -84,6 +84,7 @@ An interface defining the configuration attributes to bootstrap `localStorageSyn
 * `restoreDates` \(*boolean? = true*): Restore serialized date objects. If you work directly with ISO date strings, set this option to `false`.
 * `syncCondition` (optional) `(state) => boolean`: When set, sync to storage medium will only occur when this function returns a true boolean. Example: `(state) => state.config.syncToStorage` will check the state tree under config.syncToStorage and if true, it will sync to the storage. If undefined or false it will not sync to storage. Often useful for "remember me" options in login.
 * `checkStorageAvailability` \(*boolean? = false*): Specify if the storage availability checking is expected, i.e. for server side rendering / Universal.
+* `mergeReducer` (optional) `(state: any, rehydratedState: any, action: any) => any`: Defines the reducer to use to merge the rehydrated state from storage with the state from the ngrx store. If unspecified, defaults to performing a full deepmerge on an `INIT_ACTION` or an `UPDATE_ACTION`.
 
 Usage: `localStorageSync({keys: ['todos', 'visibilityFilter'], storageKeySerializer: (key) => 'cool_' + key, ... })`. In this example `Storage` will use keys `cool_todos` and `cool_visibilityFilter` keys to store `todos` and `visibilityFilter` slices of state). The key itself is used by default - `(key) => key`.
 

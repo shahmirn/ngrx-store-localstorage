@@ -219,6 +219,21 @@ export const syncStateUpdate = (
   });
 };
 
+// Default merge strategy is a full deep merge.
+export const defaultMergeReducer = (state: any, rehydratedState: any, action: any) => { 
+
+  if ((action.type === INIT_ACTION || action.type === UPDATE_ACTION) && rehydratedState) {
+    const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray;
+    const options: deepmerge.Options = {
+      arrayMerge: overwriteMerge
+    };
+
+    state = deepmerge(state, rehydratedState, options);
+  }
+
+  return state;
+};
+
 export const localStorageSync = (config: LocalStorageConfig) => (
   reducer: any
 ) => {
@@ -234,6 +249,13 @@ export const localStorageSync = (config: LocalStorageConfig) => (
 
   if (config.restoreDates === undefined) {
     config.restoreDates = true;
+  }
+
+  // Use default merge reducer.
+  let mergeReducer = config.mergeReducer;
+
+  if (mergeReducer === undefined || typeof(mergeReducer) !== 'function') {
+    mergeReducer = defaultMergeReducer;
   }
 
   const stateKeys = validateStateKeys(config.keys);
@@ -257,14 +279,10 @@ export const localStorageSync = (config: LocalStorageConfig) => (
       nextState = { ...state };
     }
 
-    if ((action.type === INIT_ACTION || action.type === UPDATE_ACTION) && rehydratedState) {
-      const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray;
-      const options: deepmerge.Options = {
-        arrayMerge: overwriteMerge
-      };
-      nextState = deepmerge(nextState, rehydratedState, options);
-    }
-
+    // Merge the store state with the rehydrated state using
+    // either a user-defined reducer or the default.
+    nextState = mergeReducer(nextState, rehydratedState, action);
+  
     nextState = reducer(nextState, action);
 
     if (action.type !== INIT_ACTION) {
@@ -313,4 +331,5 @@ export interface LocalStorageConfig {
   storageKeySerializer?: (key: string) => string;
   syncCondition?: (state: any) => any;
   checkStorageAvailability?: boolean;
+  mergeReducer?: (state: any, rehydratedState: any, action: any) => any;
 }
