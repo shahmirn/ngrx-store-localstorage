@@ -6,6 +6,11 @@
 
 - Remove deprecated `localStorageSyncAndClean` function
 
+### Features
+
+- Allow `@ngrx/store` v9 as a peer dependency [#142](https://github.com/btroncone/ngrx-store-localstorage/pull/142)
+- Add `mergeReducer` option to define the reducer to use to merge the rehydrated state from storage with the state from the ngrx store [#135](https://github.com/btroncone/ngrx-store-localstorage/pull/135)
+
 ## 8.0.0
 
 ### Potentially breaking changes
