@@ -1,5 +1,11 @@
 # Change Log
 
+## 9.0.0
+
+### Breaking changes
+
+- Remove deprecated `localStorageSyncAndClean` function
+
 ## 8.0.0
 
 ### Potentially breaking changes
