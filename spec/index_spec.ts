@@ -1,10 +1,10 @@
 declare var it, describe, expect;
 require('es6-shim');
-import { syncStateUpdate, rehydrateApplicationState, dateReviver, localStorageSync } from '../src/index';
-import *  as CryptoJS from 'crypto-js';
-import 'localstorage-polyfill';
-const INIT_ACTION = '@ngrx/store/init';
+import * as CryptoJS from 'crypto-js';
 import * as deepmerge from 'deepmerge';
+import 'localstorage-polyfill';
+import { dateReviver, localStorageSync, rehydrateApplicationState, syncStateUpdate } from '../src/index';
+const INIT_ACTION = '@ngrx/store/init';
 
 // Very simple classes to test serialization options.  They cover string, number, date, and nested classes
 // The top level class has static functions to help test reviver, replacer, serialize and deserialize
@@ -389,7 +389,6 @@ describe('ngrxLocalStorage', () => {
         // This tests that storage key serializer are working.
         let s = new MockStorage();
         let skr = (key) => `this_key` + key;
-        console.log(skr('a'));
         syncStateUpdate(initialState, ['state'], s, skr, false);
 
         let raw = s.getItem('1232342');
@@ -488,7 +487,7 @@ describe('ngrxLocalStorage', () => {
         });
     });
 
-    it('should enable a complex merge of rehydrated storage and state', () => {
+    it('should enable a complex merge of rehydrated storage and state (with mergeReducer)', () => {
         const initialState = {
             app: { app1: false, app2: [], app3: {} },
             feature1: { slice11: false, slice12: [], slice13: {} },
