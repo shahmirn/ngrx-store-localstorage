@@ -6,12 +6,9 @@
   "scripts": {
     "build_dist": "rimraf dist && tsc",
     "prepublish": "npm run build_dist",
-    "clean:test": "rimraf tmp",
     "clean:dist": "rimraf dist",
     "lint": "tslint src/**.ts",
-    "build_tests": "tsc -p spec",
-    "exec_tests": "jasmine",
-    "test": "tsc -p spec && jasmine && npm run clean:test",
+    "test": "nyc ts-node node_modules/jasmine/bin/jasmine",
     "typings": "typings install"
   },
   "repository": {
@@ -36,6 +33,7 @@
   },
   "devDependencies": {
     "@angular/core": "^2.4.7",
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@ngrx/core": "^1.2.0",
     "@ngrx/store": "^7.0.0",
     "@types/core-js": "^0.9.35",
@@ -47,9 +45,12 @@
     "es6-shim": "^0.35.0",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
+    "jasmine-spec-reporter": "^5.0.1",
     "localstorage-polyfill": "^1.0.1",
+    "nyc": "^15.0.1",
     "rimraf": "^2.5.4",
     "rxjs": "^5.1.1",
+    "ts-node": "^8.8.2",
     "tslint": "^4.0.2",
     "typescript": "^2.1.4",
     "zone.js": "^0.7.7"
