@@ -94,3 +94,8 @@ An interface defining the configuration attributes to bootstrap `localStorageSyn
 * `mergeReducer` (optional) `(state: any, rehydratedState: any, action: any) => any`: Defines the reducer to use to merge the rehydrated state from storage with the state from the ngrx store. If unspecified, defaults to performing a full deepmerge on an `INIT_ACTION` or an `UPDATE_ACTION`.
 
 Usage: `localStorageSync({keys: ['todos', 'visibilityFilter'], storageKeySerializer: (key) => 'cool_' + key, ... })`. In this example `Storage` will use keys `cool_todos` and `cool_visibilityFilter` keys to store `todos` and `visibilityFilter` slices of state). The key itself is used by default - `(key) => key`.
+
+## Release Notes / Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for release notes (though it is missing a couple of versions).
+
