@@ -85,7 +85,7 @@ An interface defining the configuration attributes to bootstrap `localStorageSyn
             e.g. `(state: string) => atob(state)`
 
 * `rehydrate` (optional) `boolean`: Pull initial state from local storage on startup, this will default to `false`.
-* `storage` (optional) `Storage`: Specify an object that conforms to the [Storage interface](https://github.com/Microsoft/TypeScript/blob/master/lib/lib.dom.d.ts#L9708) to use, this will default to `localStorage`.
+* `storage` (optional) `Storage`: Specify an object that conforms to the [Web Storage API interface](https://developer.mozilla.org/en-US/docs/Web/API/Storage) to use, this will default to `localStorage`.
 * `removeOnUndefined` (optional) `boolean`: Specify if the state is removed from the storage when the new value is undefined, this will default to `false`.
 * `storageKeySerializer` (optional) `(key: string) => string`: Custom serialize function for storage keys, used to avoid Storage conflicts.
 * `restoreDates` \(*boolean? = true*): Restore serialized date objects. If you work directly with ISO date strings, set this option to `false`.
