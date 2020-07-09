@@ -15,7 +15,7 @@ export const dateReviver = (key: string, value: any) => {
 const dummyReviver = (key: string, value: any) => value;
 
 const checkIsBrowserEnv = () => {
-    return typeof window !== 'undefined'
+  return typeof window !== 'undefined';
 };
 
 const validateStateKeys = (keys: any[]) => {
@@ -29,7 +29,7 @@ const validateStateKeys = (keys: any[]) => {
     if (typeof attr !== 'string') {
       throw new TypeError(
         `localStorageSync Unknown Parameter Type: ` +
-          `Expected type of string, got ${typeof attr}`
+        `Expected type of string, got ${typeof attr}`
       );
     }
     return key;
@@ -74,7 +74,7 @@ export const rehydrateApplicationState = (
         } else {
           console.error(
             `Either encrypt or decrypt is not a function on '${
-              curr[key]
+            curr[key]
             }' key object.`
           );
         }
@@ -82,7 +82,7 @@ export const rehydrateApplicationState = (
         // Let know that one of the encryption functions is not provided
         console.error(
           `Either encrypt or decrypt function is not present on '${
-            curr[key]
+          curr[key]
           }' key object.`
         );
       }
@@ -170,7 +170,7 @@ export const syncStateUpdate = (
             // If one of those is not present, then let know that one is missing
             console.error(
               `Either encrypt or decrypt function is not present on '${
-                key[name]
+              key[name]
               }' key object.`
             );
           }
@@ -220,7 +220,7 @@ export const syncStateUpdate = (
 };
 
 // Default merge strategy is a full deep merge.
-export const defaultMergeReducer = (state: any, rehydratedState: any, action: any) => { 
+export const defaultMergeReducer = (state: any, rehydratedState: any, action: any) => {
 
   if ((action.type === INIT_ACTION || action.type === UPDATE_ACTION) && rehydratedState) {
     const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray;
@@ -238,7 +238,7 @@ export const localStorageSync = (config: LocalStorageConfig) => (
   reducer: any
 ) => {
   if (config.storage === undefined &&
-      !config.checkStorageAvailability || (config.checkStorageAvailability && checkIsBrowserEnv())
+    !config.checkStorageAvailability || (config.checkStorageAvailability && checkIsBrowserEnv())
   ) {
     config.storage = localStorage || window.localStorage;
   }
@@ -254,18 +254,18 @@ export const localStorageSync = (config: LocalStorageConfig) => (
   // Use default merge reducer.
   let mergeReducer = config.mergeReducer;
 
-  if (mergeReducer === undefined || typeof(mergeReducer) !== 'function') {
+  if (mergeReducer === undefined || typeof (mergeReducer) !== 'function') {
     mergeReducer = defaultMergeReducer;
   }
 
   const stateKeys = validateStateKeys(config.keys);
   const rehydratedState = config.rehydrate
     ? rehydrateApplicationState(
-        stateKeys,
-        config.storage,
-        config.storageKeySerializer,
-        config.restoreDates
-      )
+      stateKeys,
+      config.storage,
+      config.storageKeySerializer,
+      config.restoreDates
+    )
     : undefined;
 
   return function (state, action: any) {
@@ -282,7 +282,7 @@ export const localStorageSync = (config: LocalStorageConfig) => (
     // Merge the store state with the rehydrated state using
     // either a user-defined reducer or the default.
     nextState = mergeReducer(nextState, rehydratedState, action);
-  
+
     nextState = reducer(nextState, action);
 
     if (action.type !== INIT_ACTION) {
