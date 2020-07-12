@@ -3,7 +3,7 @@ require('es6-shim');
 import * as CryptoJS from 'crypto-js';
 import * as deepmerge from 'deepmerge';
 import 'localstorage-polyfill';
-import { dateReviver, localStorageSync, rehydrateApplicationState, syncStateUpdate } from '../src/index';
+import { dateReviver, localStorageSync, rehydrateApplicationState, syncStateUpdate } from '../src/public_api';
 const INIT_ACTION = '@ngrx/store/init';
 
 // Very simple classes to test serialization options.  They cover string, number, date, and nested classes
