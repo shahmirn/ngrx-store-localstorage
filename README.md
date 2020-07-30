@@ -63,7 +63,7 @@ An interface defining the configuration attributes to bootstrap `localStorageSyn
 
     * `object[]`: Array of objects where for each object the key represents the state key and the value represents custom serialize/deserialize options. This can be one of the following:
 
-        * An array of properties which should be synced. This allows for the partial state sync (e.g. `localStorageSync({keys: [{todos: ['name', 'status'] }, ... ]})`). Note: this config cannot go any deeper. So you cannot specify another object inside of the `todos` array for example.
+        * An array of properties which should be synced. This allows for the partial state sync (e.g. `localStorageSync({keys: [{todos: ['name', 'status'] }, ... ]})`).
 
         * A reviver function as specified in the [JSON.parse documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse).
 
@@ -96,7 +96,24 @@ An interface defining the configuration attributes to bootstrap `localStorageSyn
 * `checkStorageAvailability` \(*boolean? = false*): Specify if the storage availability checking is expected, i.e. for server side rendering / Universal.
 * `mergeReducer` (optional) `(state: any, rehydratedState: any, action: any) => any`: Defines the reducer to use to merge the rehydrated state from storage with the state from the ngrx store. If unspecified, defaults to performing a full deepmerge on an `INIT_ACTION` or an `UPDATE_ACTION`.
 
-Usage: `localStorageSync({keys: ['todos', 'visibilityFilter'], storageKeySerializer: (key) => 'cool_' + key, ... })`. In this example `Storage` will use keys `cool_todos` and `cool_visibilityFilter` keys to store `todos` and `visibilityFilter` slices of state). The key itself is used by default - `(key) => key`.
+### Usage
+#### Key Prefix
+```ts
+localStorageSync({keys: ['todos', 'visibilityFilter'], storageKeySerializer: (key) => 'cool_' + key, ... });
+``` 
+In above example `Storage` will use keys `cool_todos` and `cool_visibilityFilter` keys to store `todos` and `visibilityFilter` slices of state). The key itself is used by default - `(key) => key`.
+
+#### Target Depth Configuration
+
+```ts
+localStorageSync({
+    keys: [
+        { feature1: [{ slice11: ['slice11_1'], slice14: ['slice14_2'] }] }, 
+        { feature2: ['slice21'] }
+    ],
+});
+```
+In this example, `feature1.slice11.slice11_1`, `feature1.slice14.slice14_2`, and `feature2.slice21` will be synced to `localStorage.feature1` and `localStorage.feature2`.
 
 ## Release Notes / Changelog
 

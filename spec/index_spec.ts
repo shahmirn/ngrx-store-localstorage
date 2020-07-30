@@ -9,7 +9,7 @@ const INIT_ACTION = '@ngrx/store/init';
 // Very simple classes to test serialization options.  They cover string, number, date, and nested classes
 // The top level class has static functions to help test reviver, replacer, serialize and deserialize
 class TypeB {
-    constructor(public afield: string) { }
+    constructor(public afield: string) {}
 }
 
 class TypeA {
@@ -17,8 +17,7 @@ class TypeA {
         if (typeof value === 'object') {
             if (value.afield) {
                 return new TypeB(value.afield);
-            }
-            else {
+            } else {
                 return new TypeA(value.astring, value.anumber, value.adate, value.aclass);
             }
         }
@@ -45,7 +44,7 @@ class TypeA {
         public anumber: number = undefined,
         public adate: Date = undefined,
         public aclass: TypeB = undefined
-    ) { }
+    ) {}
 }
 
 class TypeC extends TypeA {
@@ -58,20 +57,24 @@ class TypeC extends TypeA {
 
     static decrypt(message: string) {
         let decoded = CryptoJS.AES.decrypt(message, TypeC.key);
-        decoded = decoded.toString(CryptoJS.enc.Utf8);
-
-        return decoded;
+        return decoded.toString(CryptoJS.enc.Utf8);
     }
 }
 
 class MockStorage implements Storage {
     public length: number;
-    public clear(): void { throw 'Not Implemented'; }
+    public clear(): void {
+        throw 'Not Implemented';
+    }
     public getItem(key: string): string | null {
         return this[key] ? this[key] : null;
     }
-    key(index: number): string | null { throw 'Not Implemented'; }
-    removeItem(key: string): void { this[key] = undefined; }
+    key(index: number): string | null {
+        throw 'Not Implemented';
+    }
+    removeItem(key: string): void {
+        this[key] = undefined;
+    }
     setItem(key: string, data: string): void {
         this[key] = data;
     }
@@ -79,23 +82,16 @@ class MockStorage implements Storage {
     [index: number]: string;
 }
 
-function mockStorageKeySerializer(key) { return key; }
-
+function mockStorageKeySerializer(key) {
+    return key;
+}
 
 describe('ngrxLocalStorage', () => {
-    let t1 = new TypeA(
-        'Testing',
-        3.14159,
-        new Date('1968-11-16T12:30:00Z'),
-        new TypeB('Nested Class'));
+    let t1 = new TypeA('Testing', 3.14159, new Date('1968-11-16T12:30:00Z'), new TypeB('Nested Class'));
 
     let t1Json = JSON.stringify(t1);
 
-    let t1Filtered = new TypeA(
-        'Testing',
-        undefined,
-        undefined,
-        new TypeB('Nested Class'));
+    let t1Filtered = new TypeA('Testing', undefined, undefined, new TypeB('Nested Class'));
 
     let t1FilteredJson = JSON.stringify(t1Filtered);
 
@@ -111,6 +107,10 @@ describe('ngrxLocalStorage', () => {
 
     const primitiveStr = 'string is not an object';
     const initialStatePrimitiveStr = { state: primitiveStr };
+
+    beforeEach(() => {
+        localStorage.clear();
+    });
 
     it('simple', () => {
         // This tests a very simple state object syncing to mock Storage
@@ -180,10 +180,13 @@ describe('ngrxLocalStorage', () => {
         };
 
         // test selective write to storage
-        syncStateUpdate(nestedState, [
-            { 'feature1': ['slice11', 'slice12'] },
-            { 'feature2': ['slice21', 'slice22'] },
-        ], s, skr, false);
+        syncStateUpdate(
+            nestedState,
+            [{ feature1: ['slice11', 'slice12'] }, { feature2: ['slice21', 'slice22'] }],
+            s,
+            skr,
+            false
+        );
 
         const raw1 = s.getItem('feature1');
         expect(raw1).toEqual(jasmine.arrayContaining(['slice11', 'slice12']));
@@ -279,11 +282,15 @@ describe('ngrxLocalStorage', () => {
         // We want to validate the space parameter, but don't want to trip up on OS specific newlines, so filter the newlines out and
         //  compare against the literal string.
         let raw = s.getItem('replacer');
-        expect(raw.replace(/\r?\n|\r/g, '')).toEqual('{  "astring": "Testing",  "adate": "1968-11-16T12:30:00.000Z",  "anumber": 3.14159\}');
+        expect(raw.replace(/\r?\n|\r/g, '')).toEqual(
+            '{  "astring": "Testing",  "adate": "1968-11-16T12:30:00.000Z",  "anumber": 3.14159}'
+        );
 
         let finalState: any = rehydrateApplicationState(keys, s, skr, true);
 
-        expect(JSON.stringify(finalState)).toEqual('{"replacer":{"astring":"Testing","adate":"1968-11-16T12:30:00.000Z","anumber":3.14159}}');
+        expect(JSON.stringify(finalState)).toEqual(
+            '{"replacer":{"astring":"Testing","adate":"1968-11-16T12:30:00.000Z","anumber":3.14159}}'
+        );
 
         expect(t1 instanceof TypeA).toBeTruthy();
         expect(finalState.replacer instanceof TypeA).toBeFalsy();
@@ -342,7 +349,7 @@ describe('ngrxLocalStorage', () => {
 
         let s = new MockStorage();
         let skr = mockStorageKeySerializer;
-        const initalState = {state: t1Simple};
+        const initalState = { state: t1Simple };
 
         syncStateUpdate(initalState, ['state'], s, skr, false);
 
@@ -446,12 +453,12 @@ describe('ngrxLocalStorage', () => {
     it('merge initial state and rehydrated state', () => {
         // localStorage starts out in a "bad" state. This could happen if our application state schema
         // changes. End users may have the old schema and a software update has the new schema.
-        localStorage.setItem('state', JSON.stringify({oldstring: 'foo'}));
+        localStorage.setItem('state', JSON.stringify({ oldstring: 'foo' }));
 
         // Set up reducers
         const reducer = (state = initialState, action) => state;
-        const metaReducer = localStorageSync({keys: ['state'], rehydrate: true});
-        const action = {type: INIT_ACTION};
+        const metaReducer = localStorageSync({ keys: ['state'], rehydrate: true });
+        const action = { type: INIT_ACTION };
 
         // Resultant state should merge the oldstring state and our initual state
         const finalState = metaReducer(reducer)(initialState, action);
@@ -460,9 +467,9 @@ describe('ngrxLocalStorage', () => {
 
     it('should merge selectively saved state and rehydrated state', () => {
         const initialState = {
-          app: { app1: false, app2: [], app3: {} },
-          feature1: { slice11: false, slice12: [], slice13: {} },
-          feature2: { slice21: false, slice22: [], slice23: {} },
+            app: { app1: false, app2: [], app3: {} },
+            feature1: { slice11: false, slice12: [], slice13: {} },
+            feature2: { slice21: false, slice22: [], slice23: {} },
         };
 
         // A legit case where state is saved in chunks rather than as a single object
@@ -471,19 +478,19 @@ describe('ngrxLocalStorage', () => {
 
         // Set up reducers
         const reducer = (state = initialState, action) => state;
-        const metaReducer = localStorageSync({keys: [
-          {'feature1': ['slice11', 'slice12']},
-          {'feature2': ['slice21', 'slice22']},
-        ], rehydrate: true});
+        const metaReducer = localStorageSync({
+            keys: [{ feature1: ['slice11', 'slice12'] }, { feature2: ['slice21', 'slice22'] }],
+            rehydrate: true,
+        });
 
-        const action = {type: INIT_ACTION};
+        const action = { type: INIT_ACTION };
 
         // Resultant state should merge the rehydrated partial state and our initial state
         const finalState = metaReducer(reducer)(initialState, action);
         expect(finalState).toEqual({
-          app: { app1: false, app2: [], app3: {} },
-          feature1: { slice11: true, slice12: [1, 2], slice13: {} },
-          feature2: { slice21: true, slice22: [1, 2], slice23: {} },
+            app: { app1: false, app2: [], app3: {} },
+            feature1: { slice11: true, slice12: [1, 2], slice13: {} },
+            feature2: { slice21: true, slice22: [1, 2], slice23: {} },
         });
     });
 
@@ -492,39 +499,72 @@ describe('ngrxLocalStorage', () => {
             app: { app1: false, app2: [], app3: {} },
             feature1: { slice11: false, slice12: [], slice13: {} },
             feature2: { slice21: false, slice22: [], slice23: {} },
-          };
-  
-          // A legit case where state is saved in chunks rather than as a single object
-          localStorage.setItem('feature1', JSON.stringify({ slice11: true, slice12: [1, 2] }));
-          localStorage.setItem('feature2', JSON.stringify({ slice21: true, slice22: [1, 2] }));
-  
-          // Set up reducers
-          const reducer = (state = initialState, action) => state;
-          const mergeReducer = (state, rehydratedState, action) => {
+        };
+
+        // A legit case where state is saved in chunks rather than as a single object
+        localStorage.setItem('feature1', JSON.stringify({ slice11: true, slice12: [1, 2] }));
+        localStorage.setItem('feature2', JSON.stringify({ slice21: true, slice22: [1, 2] }));
+
+        // Set up reducers
+        const reducer = (state = initialState, action) => state;
+        const mergeReducer = (state, rehydratedState, action) => {
             // Perform a merge where we only want a single property from feature1
             // but a deepmerge with feature2
 
-            return {                
+            return {
                 ...state,
                 feature1: {
-                    slice11: rehydratedState.feature1.slice11
+                    slice11: rehydratedState.feature1.slice11,
                 },
-                feature2: deepmerge(state.feature2, rehydratedState.feature2)
-            }
-          }
-          const metaReducer = localStorageSync({keys: [
-            {'feature1': ['slice11', 'slice12']},
-            {'feature2': ['slice21', 'slice22']},
-          ], rehydrate: true, mergeReducer});
-  
-          const action = {type: INIT_ACTION};
-  
-          // Resultant state should merge the rehydrated partial state and our initial state
-          const finalState = metaReducer(reducer)(initialState, action);
-          expect(finalState).toEqual({
+                feature2: deepmerge(state.feature2, rehydratedState.feature2),
+            };
+        };
+        const metaReducer = localStorageSync({
+            keys: [{ feature1: ['slice11', 'slice12'] }, { feature2: ['slice21', 'slice22'] }],
+            rehydrate: true,
+            mergeReducer,
+        });
+
+        const action = { type: INIT_ACTION };
+
+        // Resultant state should merge the rehydrated partial state and our initial state
+        const finalState = metaReducer(reducer)(initialState, action);
+        expect(finalState).toEqual({
             app: { app1: false, app2: [], app3: {} },
             feature1: { slice11: true },
             feature2: { slice21: true, slice22: [1, 2], slice23: {} },
-          });
-    });    
+        });
+    });
+
+    it('should save targeted infinite depth to localStorage', () => {
+        // Configure to only save feature1.slice11.slice11_1 and feature2.slice12,
+        // ignore all other properties
+        const metaReducer = localStorageSync({
+            keys: [{ feature1: [{ slice11: ['slice11_1'], slice14: ['slice14_2'] }] }, { feature2: ['slice21'] }],
+        });
+
+        // Excute action
+        metaReducer((state: any, _action: any) => state)(
+            // Initial state with lots of unrelated properties
+            {
+                feature1: {
+                    slice11: { slice11_1: 'good_value', slice11_2: 'bad_value' },
+                    slice12: [],
+                    slice13: false,
+                    slice14: { slice14_1: true, slice14_2: 'other_good_value' },
+                },
+                feature2: {
+                    slice21: 'third_good_value',
+                },
+            },
+            { type: 'SomeAction' }
+        );
+
+        // Local storage should match expect values
+        expect(JSON.parse(localStorage['feature1'])).toEqual({
+            slice11: { slice11_1: 'good_value' },
+            slice14: { slice14_2: 'other_good_value' },
+        });
+        expect(JSON.parse(localStorage['feature2'])).toEqual({ slice21: 'third_good_value' });
+    });
 });
