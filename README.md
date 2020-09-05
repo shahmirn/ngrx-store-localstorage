@@ -1,5 +1,8 @@
 # ngrx-store-localstorage
 
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) 
+[![CircleCI](https://circleci.com/gh/btroncone/ngrx-store-localstorage.svg?style=svg)](https://circleci.com/gh/btroncone/ngrx-store-localstorage)
+
 Simple syncing between ngrx store and local storage.
 
 ## Dependencies
@@ -97,5 +100,9 @@ Usage: `localStorageSync({keys: ['todos', 'visibilityFilter'], storageKeySeriali
 
 ## Release Notes / Changelog
 
-See [CHANGELOG.md](./CHANGELOG.md) for release notes (though it is missing a couple of versions).
+From version 10 onwards, check [GitHub Releases](https://github.com/btroncone/ngrx-store-localstorage/releases) for release notes. For older versions check the [CHANGELOG.md](./CHANGELOG.md).
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for instructions on how to contribute.
 

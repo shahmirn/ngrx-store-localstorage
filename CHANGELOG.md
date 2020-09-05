@@ -1,5 +1,9 @@
 # Change Log
 
+## 10.0.0
+
+From version 10 onwards, check [GitHub Releases](https://github.com/btroncone/ngrx-store-localstorage/releases) for release notes.
+
 ## 9.0.0
 
 ### Breaking changes
