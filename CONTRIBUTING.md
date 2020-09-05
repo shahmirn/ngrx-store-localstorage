@@ -60,24 +60,22 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 5. Create your patch, **including appropriate test cases**.
 
-6. Follow our [Coding Rules](#rules).
+6. Run the full test suite (`npm test`) and ensure that all tests pass.
 
-7. Run the full test suite (`npm test`) and ensure that all tests pass.
-
-8. Commit your changes using a descriptive commit message that follows our [commit message conventions](#commit).
+7. Commit your changes using a descriptive commit message that follows our [commit message conventions](#commit).
    Adherence to these conventions is necessary because release notes are automatically generated from these messages using `semantic-release`.
 
      ```shell
      git commit -a
      ```
 
-9. Push your branch to GitHub:
+8. Push your branch to GitHub:
 
     ```shell
     git push origin my-fix-branch
     ```
 
-10. In GitHub, send a pull request to the `master` branch.
+9. In GitHub, send a pull request to the `master` branch.
 
    If we ask for changes via code reviews then:
 
