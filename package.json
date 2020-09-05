@@ -2,9 +2,8 @@
   "name": "ngrx-store-localstorage",
   "version": "9.0.0",
   "description": "State and local storage syncing for @ngrx/store",
-  "main": "./dist/index.js",
   "scripts": {
-    "build_dist": "rimraf dist && tsc",
+    "build_dist": "rimraf dist && ng-packagr -p package.json",
     "prepublish": "npm run build_dist",
     "clean:dist": "rimraf dist",
     "lint": "tslint src/**.ts",
@@ -28,10 +27,15 @@
     "url": "https://github.com/btroncone/ngrx-store-localstorage/issues"
   },
   "homepage": "https://github.com/btroncone/ngrx-store-localstorage#readme",
+  "dependencies": {
+    "deepmerge": "^3.2.0"
+  },
   "peerDependencies": {
     "@ngrx/store": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0"
   },
   "devDependencies": {
+    "@angular/compiler": "^10.0.3",
+    "@angular/compiler-cli": "^10.0.3",
     "@angular/core": "^2.4.7",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@ngrx/core": "^1.2.0",
@@ -41,22 +45,31 @@
     "@types/jasmine": "^2.5.47",
     "@types/node": "^12.12.11",
     "crypto-js": "^3.1.9-1",
+    "deepmerge": "^3.2.0",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.35.0",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
     "jasmine-spec-reporter": "^5.0.1",
     "localstorage-polyfill": "^1.0.1",
+    "ng-packagr": "^10.0.1",
     "nyc": "^15.0.1",
     "rimraf": "^2.5.4",
     "rxjs": "^5.1.1",
     "ts-node": "^8.8.2",
     "tslint": "^4.0.2",
-    "typescript": "^2.1.4",
+    "typescript": "^3.9.2",
     "zone.js": "^0.7.7"
   },
-  "typings": "./dist/index.d.ts",
-  "dependencies": {
-    "deepmerge": "^3.2.0"
+  "ngPackage": {
+    "lib": {
+      "entryFile": "src/public_api.ts",
+      "umdModuleIds": {
+        "deepmerge": "deepmerge"
+      }
+    },
+    "whitelistedNonPeerDependencies": [
+      "deepmerge"
+    ]
   }
 }
