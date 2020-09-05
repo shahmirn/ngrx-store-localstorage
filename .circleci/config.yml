@@ -1,18 +1,70 @@
-version: 2.1
-orbs:
-  node: circleci/node@1.1.6
+# Javascript Node CircleCI 2.0 configuration file
+# Check {{ '/2.0/language-javascript/' | docs_url }} for more details
+# Via: https://circleci.com/blog/publishing-npm-packages-using-circleci-2-0/
+version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:12.18
+
 jobs:
-  build-and-test:
-    executor:
-      name: node/default
+  install-lint-build-test:
+    <<: *defaults
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: npm run build_dist
-            - run: npm test
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: npm install
+
+      - run:
+          name: Define environment variable with latest commit message
+          command: |
+            echo 'export COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")' >> $BASH_ENV
+            source $BASH_ENV
+
+      - run:
+          name: Lint commit message
+          command: echo "$COMMIT_MESSAGE" | npx commitlint
+
+      - run: npm run build_dist
+
+      - run: npm test
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - persist_to_workspace:
+          root: ~/repo
+          paths: [.]
+
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Run semantic-release
+          command: cd dist && ../node_modules/.bin/semantic-release
+
 workflows:
-  build-and-test:
+  version: 2
+  test-deploy:
     jobs:
-      - build-and-test
+      - install-lint-build-test
+      - deploy:
+          requires: [install-lint-build-test]
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: master
+              # Ignore forked pull requests have CIRCLE_BRANCH set to pull/XXX
+              ignore: /pull\/[0-9]+/

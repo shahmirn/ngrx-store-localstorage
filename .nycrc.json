@@ -1,5 +1,10 @@
 {
   "extends": "@istanbuljs/nyc-config-typescript",
   "exclude": ["spec/**/*.ts"],
-  "reporter": ["text", "html"]
+  "reporter": ["text", "html"],
+  "check-coverage": true,
+  "statements": 90,
+  "branches": 82,
+  "functions": 93,
+  "lines": 90
 }
