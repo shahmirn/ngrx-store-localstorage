@@ -3,13 +3,12 @@
   "version": "9.0.0",
   "description": "State and local storage syncing for @ngrx/store",
   "scripts": {
-    "build_dist": "rimraf dist && ng-packagr -p package.json",
+    "build_dist": "npm run clean && ng-packagr -p package.json",
     "prepublish": "npm run build_dist",
-    "clean:dist": "rimraf dist",
+    "clean": "rimraf dist",
     "lint": "tslint --fix src/**.ts",
     "pretest": "npm run lint",
-    "test": "nyc ts-node node_modules/jasmine/bin/jasmine",
-    "typings": "typings install"
+    "test": "nyc ts-node node_modules/jasmine/bin/jasmine"
   },
   "repository": {
     "type": "git",

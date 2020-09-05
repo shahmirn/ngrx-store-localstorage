@@ -50,7 +50,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/repo
-      - run: npx semantic-release
+      - run:
+          name: Run semantic-release
+          command: cd dist && ../node_modules/.bin/semantic-release
 
 workflows:
   version: 2
