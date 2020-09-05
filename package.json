@@ -4,7 +4,6 @@
   "description": "State and local storage syncing for @ngrx/store",
   "scripts": {
     "build_dist": "npm run clean && ng-packagr -p package.json",
-    "prepublish": "npm run build_dist",
     "clean": "rimraf dist",
     "lint": "tslint --fix src/**.ts",
     "pretest": "npm run lint",
