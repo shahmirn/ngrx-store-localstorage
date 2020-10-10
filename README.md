@@ -1,9 +1,11 @@
 # ngrx-store-localstorage
 
+![bundle size](https://img.shields.io/bundlephobia/minzip/ngrx-store-localstorage)
+![npm weekly downloads](https://img.shields.io/npm/dw/ngrx-store-localstorage)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) 
 [![CircleCI](https://circleci.com/gh/btroncone/ngrx-store-localstorage.svg?style=svg)](https://circleci.com/gh/btroncone/ngrx-store-localstorage)
 
-Simple syncing between ngrx store and local storage.
+Simple syncing between ngrx store and local or session storage.
 
 ## Dependencies
 
