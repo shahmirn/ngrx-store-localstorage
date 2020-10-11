@@ -99,9 +99,14 @@ An interface defining the configuration attributes to bootstrap `localStorageSyn
 * `mergeReducer` (optional) `(state: any, rehydratedState: any, action: any) => any`: Defines the reducer to use to merge the rehydrated state from storage with the state from the ngrx store. If unspecified, defaults to performing a full deepmerge on an `INIT_ACTION` or an `UPDATE_ACTION`.
 
 ### Usage
+
 #### Key Prefix
+
 ```ts
-localStorageSync({keys: ['todos', 'visibilityFilter'], storageKeySerializer: (key) => 'cool_' + key, ... });
+localStorageSync({
+  keys: ['todos', 'visibilityFilter'], 
+  storageKeySerializer: (key) => `cool_${key}`, 
+});
 ``` 
 In above example `Storage` will use keys `cool_todos` and `cool_visibilityFilter` keys to store `todos` and `visibilityFilter` slices of state). The key itself is used by default - `(key) => key`.
 
@@ -109,10 +114,10 @@ In above example `Storage` will use keys `cool_todos` and `cool_visibilityFilter
 
 ```ts
 localStorageSync({
-    keys: [
-        { feature1: [{ slice11: ['slice11_1'], slice14: ['slice14_2'] }] }, 
-        { feature2: ['slice21'] }
-    ],
+  keys: [
+      { feature1: [{ slice11: ['slice11_1'], slice14: ['slice14_2'] }] }, 
+      { feature2: ['slice21'] }
+  ],
 });
 ```
 In this example, `feature1.slice11.slice11_1`, `feature1.slice14.slice14_2`, and `feature2.slice21` will be synced to `localStorage.feature1` and `localStorage.feature2`.
