@@ -543,7 +543,7 @@ describe('ngrxLocalStorage', () => {
             keys: [{ feature1: [{ slice11: ['slice11_1'], slice14: ['slice14_2'] }] }, { feature2: ['slice21'] }],
         });
 
-        // Excute action
+        // Execute action
         metaReducer((state: any, _action: any) => state)(
             // Initial state with lots of unrelated properties
             {
@@ -566,5 +566,45 @@ describe('ngrxLocalStorage', () => {
             slice14: { slice14_2: 'other_good_value' },
         });
         expect(JSON.parse(localStorage['feature2'])).toEqual({ slice21: 'third_good_value' });
+    });
+
+    it('should allow a mix of partial and full state in keys', () => {
+        // given
+        const metaReducer = localStorageSync({
+            keys: [
+                // partial state - object
+                { feature1: [{ slice11: ['slice11_1'], slice14: ['slice14_2'] }] },
+
+                // full state - string
+                'feature2',
+            ],
+        });
+
+        // when
+        metaReducer((state: any, _action: any) => state)(
+            {
+                feature1: {
+                    slice11: { slice11_1: 'good_value', slice11_2: 'bad_value' },
+                    slice12: [],
+                    slice13: false,
+                    slice14: { slice14_1: true, slice14_2: 'other_good_value' },
+                },
+                feature2: {
+                    slice21: 'third_good_value',
+                    slice22: 'fourth_good_value',
+                },
+            },
+            { type: 'SomeAction' }
+        );
+
+        // then
+        expect(JSON.parse(localStorage['feature1'])).toEqual({
+            slice11: { slice11_1: 'good_value' },
+            slice14: { slice14_2: 'other_good_value' },
+        });
+        expect(JSON.parse(localStorage['feature2'])).toEqual({
+            slice21: 'third_good_value',
+            slice22: 'fourth_good_value',
+        });
     });
 });
