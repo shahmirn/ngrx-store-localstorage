@@ -321,4 +321,4 @@ interface Options {
     space?: string | number;
 }
 
-export type Keys = string[] | (KeyConfiguration | Options | string)[];
+export type Keys = (KeyConfiguration | Options| string)[];
