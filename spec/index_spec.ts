@@ -18,14 +18,14 @@ class TypeA {
             if (value.afield) {
                 return new TypeB(value.afield);
             } else {
-                return new TypeA(value.astring, value.anumber, value.adate, value.aclass);
+                return new TypeA(value.astring, value.anumber, value.aboolean, value.adate, value.aclass);
             }
         }
         return dateReviver(key, value);
     }
 
     static replacer(key: string, value: any) {
-        if (key === 'anumber' || key === 'adate') {
+        if (key === 'anumber' || key === 'aboolean' || key === 'adate') {
             return undefined;
         }
         return value;
@@ -36,12 +36,13 @@ class TypeA {
     }
 
     static deserialize(json: any): TypeA {
-        return new TypeA(json.astring, json.anumber, json.adate, new TypeB(json.aclass.afield));
+        return new TypeA(json.astring, json.anumber, json.aboolean, json.adate, new TypeB(json.aclass.afield));
     }
 
     constructor(
         public astring: string = undefined,
         public anumber: number = undefined,
+        public aboolean: boolean = undefined,
         public adate: Date = undefined,
         public aclass: TypeB = undefined
     ) {}
@@ -87,15 +88,15 @@ function mockStorageKeySerializer(key) {
 }
 
 describe('ngrxLocalStorage', () => {
-    let t1 = new TypeA('Testing', 3.14159, new Date('1968-11-16T12:30:00Z'), new TypeB('Nested Class'));
+    let t1 = new TypeA('Testing', 3.14159, true, new Date('1968-11-16T12:30:00Z'), new TypeB('Nested Class'));
 
     let t1Json = JSON.stringify(t1);
 
-    let t1Filtered = new TypeA('Testing', undefined, undefined, new TypeB('Nested Class'));
+    let t1Filtered = new TypeA('Testing', undefined, undefined, undefined, new TypeB('Nested Class'));
 
     let t1FilteredJson = JSON.stringify(t1Filtered);
 
-    let t1Simple = { astring: 'Testing', adate: '1968-11-16T12:30:00.000Z', anumber: 3.14159 };
+    let t1Simple = { astring: 'Testing', adate: '1968-11-16T12:30:00.000Z', anumber: 3.14159, aboolean: true };
 
     let initialState = { state: t1 };
 
@@ -107,6 +108,8 @@ describe('ngrxLocalStorage', () => {
 
     const primitiveStr = 'string is not an object';
     const initialStatePrimitiveStr = { state: primitiveStr };
+    const primitiveBool = true;
+    const initialStatePrimitiveBool = { state: primitiveBool };
 
     beforeEach(() => {
         localStorage.clear();
@@ -143,6 +146,19 @@ describe('ngrxLocalStorage', () => {
 
         const finalState: any = rehydrateApplicationState(['state'], s, skr, true);
         expect(finalState.state).toEqual(primitiveStr);
+    });
+
+    it('simple boolean', () => {
+        const s = new MockStorage();
+        const skr = mockStorageKeySerializer;
+
+        syncStateUpdate(initialStatePrimitiveBool, ['state'], s, skr, false);
+
+        const raw = s.getItem('state');
+        expect(JSON.parse(raw)).toEqual(primitiveBool);
+
+        const finalState: any = rehydrateApplicationState(['state'], s, skr, true);
+        expect(finalState.state).toEqual(primitiveBool);
     });
 
     it('filtered', () => {
