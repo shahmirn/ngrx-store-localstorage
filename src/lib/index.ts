@@ -86,7 +86,7 @@ export const rehydrateApplicationState = (
                 const isObjectRegex = new RegExp('{|\\[');
                 let raw = stateSlice;
 
-                if (stateSlice === 'null' || isObjectRegex.test(stateSlice.charAt(0))) {
+                if (stateSlice === 'null' || stateSlice === 'true' || stateSlice === 'false' || isObjectRegex.test(stateSlice.charAt(0))) {
                     raw = JSON.parse(stateSlice, reviver);
                 }
 
