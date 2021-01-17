@@ -94,8 +94,6 @@ describe('ngrxLocalStorage', () => {
 
     let t1Filtered = new TypeA('Testing', undefined, undefined, undefined, new TypeB('Nested Class'));
 
-    let t1FilteredJson = JSON.stringify(t1Filtered);
-
     let t1Simple = { astring: 'Testing', adate: '1968-11-16T12:30:00.000Z', anumber: 3.14159, aboolean: true };
 
     let initialState = { state: t1 };
@@ -103,13 +101,6 @@ describe('ngrxLocalStorage', () => {
     let initialStateJson = JSON.stringify(initialState);
 
     let undefinedState = { state: undefined };
-
-    let undefinedStateJson = JSON.stringify(undefinedState);
-
-    const primitiveStr = 'string is not an object';
-    const initialStatePrimitiveStr = { state: primitiveStr };
-    const primitiveBool = true;
-    const initialStatePrimitiveBool = { state: primitiveBool };
 
     beforeEach(() => {
         localStorage.clear();
@@ -136,6 +127,9 @@ describe('ngrxLocalStorage', () => {
     });
 
     it('simple string', () => {
+        const primitiveStr = 'string is not an object';
+        const initialStatePrimitiveStr = { state: primitiveStr };
+
         const s = new MockStorage();
         const skr = mockStorageKeySerializer;
 
@@ -148,17 +142,22 @@ describe('ngrxLocalStorage', () => {
         expect(finalState.state).toEqual(primitiveStr);
     });
 
-    it('simple boolean', () => {
-        const s = new MockStorage();
-        const skr = mockStorageKeySerializer;
+    [true, false].forEach((bool) => {
+        it(`simple ${bool} boolean`, () => {
+            const primitiveBool = bool;
+            const initialStatePrimitiveBool = { state: primitiveBool };
 
-        syncStateUpdate(initialStatePrimitiveBool, ['state'], s, skr, false);
+            const s = new MockStorage();
+            const skr = mockStorageKeySerializer;
 
-        const raw = s.getItem('state');
-        expect(JSON.parse(raw)).toEqual(primitiveBool);
+            syncStateUpdate(initialStatePrimitiveBool, ['state'], s, skr, false);
 
-        const finalState: any = rehydrateApplicationState(['state'], s, skr, true);
-        expect(finalState.state).toEqual(primitiveBool);
+            const raw = s.getItem('state');
+            expect(JSON.parse(raw)).toEqual(primitiveBool);
+
+            const finalState: any = rehydrateApplicationState(['state'], s, skr, true);
+            expect(finalState.state).toEqual(primitiveBool);
+        });
     });
 
     it('filtered', () => {
