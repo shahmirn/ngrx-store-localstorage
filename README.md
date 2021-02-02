@@ -122,6 +122,10 @@ localStorageSync({
 ```
 In this example, `feature1.slice11.slice11_1`, `feature1.slice14.slice14_2`, and `feature2.slice21` will be synced to `localStorage.feature1` and `localStorage.feature2`.
 
+## Known Workarounds
+
+1. [Sync state across multiple tabs](https://github.com/btroncone/ngrx-store-localstorage/issues/40#issuecomment-336283880)
+
 ## Release Notes / Changelog
 
 From version 10 onwards, check [GitHub Releases](https://github.com/btroncone/ngrx-store-localstorage/releases) for release notes. For older versions check the [CHANGELOG.md](./CHANGELOG.md).
