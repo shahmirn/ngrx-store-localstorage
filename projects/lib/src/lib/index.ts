@@ -1,7 +1,9 @@
-import * as deepmerge from 'deepmerge';
+import deepmerge from 'deepmerge';
+import {
+    INIT as INIT_ACTION,
+    UPDATE as UPDATE_ACTION
+} from '@ngrx/store';
 
-const INIT_ACTION = '@ngrx/store/init';
-const UPDATE_ACTION = '@ngrx/store/update-reducers';
 const detectDate = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/;
 
 // correctly parse dates from local storage
@@ -127,7 +129,7 @@ export const syncStateUpdate = (
     state: any,
     keys: Keys,
     storage: Storage,
-    storageKeySerializer: (key: string | number) => string,
+    storageKeySerializer: (key: string) => string,
     removeOnUndefined: boolean,
     syncCondition?: (state: any) => any
 ) => {
