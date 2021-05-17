@@ -1,10 +1,10 @@
 declare var it, describe, expect;
 require('es6-shim');
 import * as CryptoJS from 'crypto-js';
-import * as deepmerge from 'deepmerge';
+import deepmerge from 'deepmerge';
 import 'localstorage-polyfill';
-import { dateReviver, localStorageSync, rehydrateApplicationState, syncStateUpdate } from '../src/public_api';
-const INIT_ACTION = '@ngrx/store/init';
+import { dateReviver, localStorageSync, rehydrateApplicationState, syncStateUpdate } from '../projects/lib/src/public_api';
+import { INIT as INIT_ACTION } from '@ngrx/store';
 
 // Very simple classes to test serialization options.  They cover string, number, date, and nested classes
 // The top level class has static functions to help test reviver, replacer, serialize and deserialize
@@ -204,10 +204,10 @@ describe('ngrxLocalStorage', () => {
         );
 
         const raw1 = s.getItem('feature1');
-        expect(raw1).toEqual(jasmine.arrayContaining(['slice11', 'slice12']));
+        expect(raw1).toEqual(JSON.stringify({"slice11":true,"slice12":[1,2]}));
 
         const raw2 = s.getItem('feature2');
-        expect(raw2).toEqual(jasmine.arrayContaining(['slice21', 'slice22']));
+        expect(raw2).toEqual(JSON.stringify({"slice21":true,"slice22":[1,2]}));
     });
 
     it('reviver', () => {

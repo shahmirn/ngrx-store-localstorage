@@ -1,0 +1,13 @@
+{
+  "name": "ngrx-store-localstorage",
+  "version": "9.0.0",
+  "peerDependencies": {
+    "@angular/common": "^12.0.0",
+    "@angular/core": "^12.0.0",
+    "@ngrx/store": "^12.0.0"
+  },
+  "dependencies": {
+    "deepmerge": "^4.2.2",
+    "tslib": "^2.1.0"
+  }
+}
