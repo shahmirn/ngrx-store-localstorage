@@ -3,11 +3,13 @@
   "version": "9.0.0",
   "description": "State and local storage syncing for @ngrx/store",
   "scripts": {
-    "build_dist": "npm run clean && ng-packagr -p package.json",
+    "build_dist": "npm run clean && ng build lib --configuration production",
     "clean": "rimraf dist",
-    "lint": "tslint --fix src/**.ts",
+    "lint": "ng lint --fix",
+    "ng": "ng",
     "pretest": "npm run lint",
-    "test": "nyc ts-node node_modules/jasmine/bin/jasmine"
+    "test": "nyc ts-node -O '{\"module\": \"commonjs\"}' node_modules/jasmine/bin/jasmine",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -27,61 +29,53 @@
   },
   "homepage": "https://github.com/btroncone/ngrx-store-localstorage#readme",
   "dependencies": {
-    "deepmerge": "^3.2.0"
-  },
-  "peerDependencies": {
-    "@ngrx/store": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0"
+    "@angular/animations": "~12.0.0",
+    "@angular/common": "~12.0.0",
+    "@angular/compiler": "~12.0.0",
+    "@angular/core": "~12.0.0",
+    "@angular/forms": "~12.0.0",
+    "@angular/platform-browser": "~12.0.0",
+    "@angular/platform-browser-dynamic": "~12.0.0",
+    "@angular/router": "~12.0.0",
+    "@ngrx/store": "^12.0.0",
+    "deepmerge": "^4.2.2",
+    "rxjs": "~6.6.0",
+    "tslib": "^2.1.0",
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular/compiler": "^10.0.3",
-    "@angular/compiler-cli": "^10.0.3",
-    "@angular/core": "^2.4.7",
-    "@commitlint/cli": "^9.1.2",
-    "@commitlint/config-conventional": "^10.0.0",
+    "@angular-devkit/build-angular": "~12.0.0",
+    "@angular-eslint/builder": "12.0.0",
+    "@angular-eslint/eslint-plugin": "12.0.0",
+    "@angular-eslint/eslint-plugin-template": "12.0.0",
+    "@angular-eslint/schematics": "12.0.0",
+    "@angular-eslint/template-parser": "12.0.0",
+    "@angular/cli": "~12.0.0",
+    "@angular/compiler-cli": "~12.0.0",
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "@ngrx/core": "^1.2.0",
-    "@ngrx/store": "^7.0.0",
-    "@types/core-js": "^0.9.35",
-    "@types/crypto-js": "^3.1.33",
-    "@types/jasmine": "^2.5.47",
-    "@types/node": "^12.12.11",
-    "crypto-js": "^3.1.9-1",
-    "es6-promise": "^3.0.2",
-    "es6-shim": "^0.35.0",
-    "husky": "^4.2.5",
-    "jasmine": "^2.4.1",
-    "jasmine-core": "^2.4.1",
-    "jasmine-spec-reporter": "^5.0.1",
-    "lint-staged": "^10.3.0",
+    "@types/jasmine": "~3.6.0",
+    "@types/node": "^14.17.0",
+    "@typescript-eslint/eslint-plugin": "4.23.0",
+    "@typescript-eslint/parser": "4.23.0",
+    "crypto-js": "^4.0.0",
+    "es6-shim": "^0.35.6",
+    "eslint": "^7.26.0",
+    "husky": "^6.0.0",
+    "jasmine": "^3.7.0",
+    "jasmine-core": "~3.7.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "lint-staged": "^11.0.0",
     "localstorage-polyfill": "^1.0.1",
-    "ng-packagr": "^10.0.1",
-    "nyc": "^15.0.1",
-    "rimraf": "^2.5.4",
-    "rxjs": "^5.1.1",
-    "semantic-release": "^17.1.1",
-    "ts-node": "^8.8.2",
-    "tslint": "^6.1.3",
-    "typescript": "^3.9.7",
-    "zone.js": "^0.7.7"
-  },
-  "ngPackage": {
-    "lib": {
-      "entryFile": "src/public_api.ts",
-      "umdModuleIds": {
-        "deepmerge": "deepmerge"
-      }
-    },
-    "whitelistedNonPeerDependencies": [
-      "deepmerge"
-    ]
+    "ng-packagr": "^12.0.0",
+    "nyc": "^15.1.0",
+    "rimraf": "^3.0.2",
+    "semantic-release": "^17.4.3",
+    "ts-node": "^9.1.1",
+    "typescript": "~4.2.3"
   },
   "lint-staged": {
-    "*.ts": "tslint --fix"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "*.ts": "eslint --cache --fix"
   }
 }

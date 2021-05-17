@@ -9,7 +9,7 @@ Simple syncing between ngrx store and local or session storage.
 
 ## Dependencies
 
-`ngrx-store-localstorage` depends on [@ngrx/store](https://github.com/ngrx/store) and [Angular 2+](https://github.com/angular/angular).
+`ngrx-store-localstorage` depends on [@ngrx/store](https://github.com/ngrx/platform) and [Angular 12+](https://github.com/angular/angular).
 
 ## Usage
 

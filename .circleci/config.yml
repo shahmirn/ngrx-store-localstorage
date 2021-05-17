@@ -6,7 +6,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/repo
   docker:
-    - image: circleci/node:12.18
+    - image: cimg/node:14.17.0
 
 jobs:
   install-lint-build-test:
@@ -52,7 +52,7 @@ jobs:
           at: ~/repo
       - run:
           name: Run semantic-release
-          command: cd dist && ../node_modules/.bin/semantic-release
+          command: cd dist/lib && ../../node_modules/.bin/semantic-release
 
 workflows:
   version: 2
