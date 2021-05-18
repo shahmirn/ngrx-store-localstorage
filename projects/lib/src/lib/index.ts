@@ -129,7 +129,7 @@ export const syncStateUpdate = (
     state: any,
     keys: Keys,
     storage: Storage,
-    storageKeySerializer: (key: string) => string,
+    storageKeySerializer: (key: string | number) => string,
     removeOnUndefined: boolean,
     syncCondition?: (state: any) => any
 ) => {
@@ -286,7 +286,7 @@ export const localStorageSync = (config: LocalStorageConfig) => (reducer: any) =
                 nextState,
                 stateKeys,
                 config.storage,
-                config.storageKeySerializer,
+                config.storageKeySerializer as (key: string | number) => string,
                 config.removeOnUndefined,
                 config.syncCondition
             );
