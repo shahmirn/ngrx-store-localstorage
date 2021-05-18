@@ -1,81 +1,18 @@
 {
   "name": "ngrx-store-localstorage",
-  "version": "9.0.0",
-  "description": "State and local storage syncing for @ngrx/store",
-  "scripts": {
-    "build_dist": "npm run clean && ng build lib --configuration production",
-    "clean": "rimraf dist",
-    "lint": "ng lint --fix",
-    "ng": "ng",
-    "pretest": "npm run lint",
-    "test": "nyc ts-node -O '{\"module\": \"commonjs\"}' node_modules/jasmine/bin/jasmine",
-    "prepare": "husky install"
+  "version": "12.0.0",
+  "peerDependencies": {
+    "@angular/common": "^12.0.0",
+    "@angular/core": "^12.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/btroncone/ngrx-store-localstorage.git"
-  },
-  "keywords": [
-    "redux",
-    "ngrx",
-    "store",
-    "localstorage",
-    "rxjs"
-  ],
-  "author": "Brian Troncone",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/btroncone/ngrx-store-localstorage/issues"
-  },
-  "homepage": "https://github.com/btroncone/ngrx-store-localstorage#readme",
   "dependencies": {
-    "@angular/animations": "~12.0.0",
-    "@angular/common": "~12.0.0",
-    "@angular/compiler": "~12.0.0",
-    "@angular/core": "~12.0.0",
-    "@angular/forms": "~12.0.0",
-    "@angular/platform-browser": "~12.0.0",
-    "@angular/platform-browser-dynamic": "~12.0.0",
-    "@angular/router": "~12.0.0",
-    "@ngrx/store": "^12.0.0",
-    "deepmerge": "^4.2.2",
-    "rxjs": "~6.6.0",
-    "tslib": "^2.1.0",
-    "zone.js": "~0.11.4"
+    "tslib": "^2.1.0"
   },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "~12.0.0",
-    "@angular-eslint/builder": "12.0.0",
-    "@angular-eslint/eslint-plugin": "12.0.0",
-    "@angular-eslint/eslint-plugin-template": "12.0.0",
-    "@angular-eslint/schematics": "12.0.0",
-    "@angular-eslint/template-parser": "12.0.0",
-    "@angular/cli": "~12.0.0",
-    "@angular/compiler-cli": "~12.0.0",
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
-    "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "@types/jasmine": "~3.6.0",
-    "@types/node": "^12.11.1",
-    "@typescript-eslint/eslint-plugin": "4.23.0",
-    "@typescript-eslint/parser": "4.23.0",
-    "crypto-js": "^4.0.0",
-    "es6-shim": "^0.35.6",
-    "eslint": "^7.26.0",
-    "husky": "^6.0.0",
-    "jasmine": "^3.7.0",
-    "jasmine-core": "~3.7.0",
-    "jasmine-spec-reporter": "^7.0.0",
-    "lint-staged": "^11.0.0",
-    "localstorage-polyfill": "^1.0.1",
-    "ng-packagr": "^12.0.0",
-    "nyc": "^15.1.0",
-    "rimraf": "^3.0.2",
-    "semantic-release": "^17.4.3",
-    "ts-node": "^9.1.1",
-    "typescript": "~4.2.3"
-  },
-  "lint-staged": {
-    "*.ts": "eslint --cache --fix"
-  }
+  "main": "bundles/ngrx-store-localstorage.umd.js",
+  "module": "fesm2015/ngrx-store-localstorage.js",
+  "es2015": "fesm2015/ngrx-store-localstorage.js",
+  "esm2015": "esm2015/ngrx-store-localstorage.js",
+  "fesm2015": "fesm2015/ngrx-store-localstorage.js",
+  "typings": "ngrx-store-localstorage.d.ts",
+  "sideEffects": false
 }
